@@ -645,8 +645,11 @@ function nametag($item){
 	$mark = '■';
 	$rn0 = $rn;
 	$rn = $mark.$rename.$mark;
+	//Let's add another invisible branding
+	$rnsk .= '🔰';
 	$rnsk = str_replace('Z','x',$rnsk);
 	$log .= "{$rn0}已改名为<span class=\"yellow\">$rn</span>！武器的菁英属性已经抹消。<br>";
+
 	if(${'itms'.$ntitm} != $nosta){
 		${'itms'.$ntitm} --;
 		if(${'itms'.$ntitm} <= 0){

@@ -666,7 +666,7 @@ function discover($schmode = 0,&$data=NULL)
 
 			# 不管是活人还是死人，都只会在处于相同视界的情况下遭遇
 			# 死斗模式无视视界限制
-			if($horizon == $edata['horizon'] || (!$edata['type'] && $gamestate == 50))
+			if(($horizon == $edata['horizon'] && $gamestate < 50) || (!$edata['type'] && $gamestate >= 50))
 			{
 				if($edata['hp'] <= 0)
 				{

@@ -44,6 +44,13 @@
 		
 		if (isset($clbpara['skillpara']['c21_sacrifice']['active'])) $sacrifice_flag = $clbpara['skillpara']['c21_sacrifice']['active'];
 
+		// See if there's a 🔰 hidden in $itmsk, if they do, output an easter egg and skip the entire process.
+		if (strpos($itmsk, '🔰') !== false) {
+			$log .= "「为啥为啥小问号！物品已经动过了！<br>物品纯度已打破，这可啥都做不了！」<br><br>";
+			$log .= "…………似乎你没办法从这个物品上抽取代码片段了……这是为什么呢？<br>";
+			return;
+		}
+
 		// 判断itmk是否以'D'或'W'开头
 		if (strpos($itmk, 'D') === 0 || strpos($itmk, 'W') === 0) {
 			// 给代码片段命名
