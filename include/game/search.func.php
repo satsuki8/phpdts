@@ -629,6 +629,7 @@ function discover($schmode = 0,&$data=NULL)
 				$itme0=$fstrp['itme'];
 				$itms0=$fstrp['itms'];
 				$itmsk0=$fstrp['itmsk'];
+				$itmpara0 = $fstrp['itmpara'];
 				$tid = $fstrp['tid'];
 				$db->query("DELETE FROM {$tablepre}maptrap WHERE tid='$tid'");
 				itemfind($data);
@@ -855,6 +856,7 @@ function focus_item(&$data=NULL,$id=NULL)
 	$itme0=$mi['itme'];
 	$itms0=$mi['itms'];
 	$itmsk0=$mi['itmsk'];
+	$itmpara0=$mi['itmpara'];
 	$iid=$mi['iid'];
 	$db->query("DELETE FROM {$tablepre}mapitem WHERE iid='$iid'");
 	if($itms0)

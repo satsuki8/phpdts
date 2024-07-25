@@ -915,6 +915,36 @@ function set_clbpara($para,$key,$value)
 	return $para;
 }
 
+//let's just copy the above...
+//将itmpara转为数组
+function get_itmpara($para)
+{
+	if(empty($para)) $para = Array();
+	if(!is_array($para)) return json_decode($para,true);
+	else return $para;
+}
+//获取itmpara中指定键
+function get_single_itmpara($para,$key)
+{
+	if(!is_array($para)) $para = get_itmpara($para);
+	if(isset($para[$key])) return $para[$key];
+	return;
+}
+//删除itmpara中指定键
+function del_single_itmpara($para,$key)
+{
+	if(!is_array($para)) $para = get_itmpara($para);
+	if(isset($para[$key])) unset($para[$key]);
+	return $para;
+}
+//修改itmpara中指定键
+function set_itmpara($para,$key,$value)
+{
+	if(!is_array($para)) $para = get_itmpara($para);
+	if(isset($para[$key])) $para[$key] = $value;
+	return $para;
+}
+
 // 正态分布
 function generate_ndnumbers($min, $max, $count = 10) 
 {

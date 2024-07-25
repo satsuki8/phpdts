@@ -38,6 +38,22 @@ if($gamestate == 0) {
 $gametype = 0;
 
 $pdata['clbpara'] = get_clbpara($pdata['clbpara']);
+//Also copying for $weppara, $itmpara and such.
+$pdata['weppara'] = get_itmpara($pdata['weppara']);
+$pdata['wep2para'] = get_itmpara($pdata['wep2para']);
+$pdata['itm0para'] = get_itmpara($pdata['itm0para']);
+$pdata['itm1para'] = get_itmpara($pdata['itm1para']);
+$pdata['itm2para'] = get_itmpara($pdata['itm2para']);
+$pdata['itm3para'] = get_itmpara($pdata['itm3para']);
+$pdata['itm4para'] = get_itmpara($pdata['itm4para']);
+$pdata['itm5para'] = get_itmpara($pdata['itm5para']);
+$pdata['itm6para'] = get_itmpara($pdata['itm6para']);
+$pdata['arbpara'] = get_itmpara($pdata['arbpara']);
+$pdata['arhpara'] = get_itmpara($pdata['arhpara']);
+$pdata['arapara'] = get_itmpara($pdata['arapara']);
+$pdata['arfpara'] = get_itmpara($pdata['arfpara']);
+$pdata['artpara'] = get_itmpara($pdata['artpara']);
+
 extract($pdata,EXTR_REFS);
 init_playerdata();
 init_profile();

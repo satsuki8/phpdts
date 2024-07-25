@@ -161,7 +161,7 @@ function adtsk(){
 	if($club == 7){//电脑社，电气改造
 		$position = 0;
 		foreach(Array(1,2,3,4,5,6) as $imn){
-			global ${'itm'.$imn},${'itmk'.$imn},${'itme'.$imn},${'itms'.$imn},${'itmsk'.$imn};
+			global ${'itm'.$imn},${'itmk'.$imn},${'itme'.$imn},${'itms'.$imn},${'itmsk'.$imn}, ${'itmpara'.$imn};
 			if(strpos(${'itmk'.$imn},'B')===0 && ${'itme'.$imn} > 0 ){
 				$position = $imn;
 				break;
@@ -186,7 +186,7 @@ function adtsk(){
 			$wepsk .= 'e';
 			if(${'itms'.$position} == 0){
 				$log .= "<span class=\"red\">$itm</span>用光了。<br />";
-				${'itm'.$position} = ${'itmk'.$position} = ${'itmsk'.$position} = '';
+				${'itm'.$position} = ${'itmk'.$position} = ${'itmsk'.$position} = ${'itmpara'.$position} = '';
 				${'itme'.$position} =${'itms'.$position} =0;				
 			}
 			$mode = 'command';
@@ -199,7 +199,7 @@ function adtsk(){
 	}elseif($club == 8){//带毒改造
 		$position = 0;
 		foreach(Array(1,2,3,4,5,6) as $imn){
-			global ${'itm'.$imn},${'itmk'.$imn},${'itme'.$imn},${'itms'.$imn},${'itmsk'.$imn};
+			global ${'itm'.$imn},${'itmk'.$imn},${'itme'.$imn},${'itms'.$imn},${'itmsk'.$imn},${'itmpara'.$imn};
 			if(${'itm'.$imn} == '毒药' && ${'itmk'.$imn} == 'Y' && ${'itme'.$imn} > 0 ){
 				$position = $imn;
 				break;
@@ -222,7 +222,7 @@ function adtsk(){
 			$itm = ${'itm'.$position};
 			if(${'itms'.$position} == 0){
 				$log .= "<span class=\"red\">$itm</span>用光了。<br />";
-				${'itm'.$position} = ${'itmk'.$position} = ${'itmsk'.$position} = '';
+				${'itm'.$position} = ${'itmk'.$position} = ${'itmsk'.$position} = ${'itmpara'.$position}= '';
 				${'itme'.$position} =${'itms'.$position} =0;				
 			}
 			$mode = 'command';
@@ -240,7 +240,7 @@ function adtsk(){
 }
 
 function trap_adtsk($which){
-	global $log,$mode,$club,${'itm'.$which},${'itmk'.$which},${'itme'.$which},${'itms'.$which};
+	global $log,$mode,$club,${'itm'.$which},${'itmk'.$which},${'itme'.$which},${'itms'.$which},${'itmpara'.$which};
 	if(strpos(${'itmk'.$which},'T')!==0){
 		$log .= '<span class="red">这个物品不是陷阱，无法改造！</span><br />';
 		$mode = 'command';
@@ -272,7 +272,7 @@ function trap_adtsk($which){
 			${'itm'.$which} = '电气'.${'itm'.$which};
 			if(${'itms'.$position} == 0){
 				$log .= "<span class=\"red\">$itm</span>用光了。<br />";
-				${'itm'.$position} = ${'itmk'.$position} = ${'itmsk'.$position} = '';
+				${'itm'.$position} = ${'itmk'.$position} = ${'itmsk'.$position} = ${'itmpara'.$position} = '';
 				${'itme'.$position} =${'itms'.$position} =0;				
 			}
 			$mode = 'command';
@@ -303,7 +303,7 @@ function trap_adtsk($which){
 			${'itm'.$which} = '毒性'.${'itm'.$which};
 			if(${'itms'.$position} == 0){
 				$log .= "<span class=\"red\">$itm</span>用光了。<br />";
-				${'itm'.$position} = ${'itmk'.$position} = ${'itmsk'.$position} = '';
+				${'itm'.$position} = ${'itmk'.$position} = ${'itmsk'.$position} = ${'itmpara'.$position} = '';
 				${'itme'.$position} =${'itms'.$position} =0;				
 			}
 			$mode = 'command';
@@ -334,7 +334,7 @@ function syncro($sb){
 	return;
 }
 function weaponswap(){
-	global $log,$mode,$club,$wep,$wepk,$wepe,$weps,$wepsk,$gamecfg;
+	global $log,$mode,$club,$wep,$wepk,$wepe,$weps,$wepsk,$weppara,$gamecfg;
 	if (strpos($wepsk,'j')===false){
 		$log.='你的武器不能变换。<br>';
 		$mode = 'command';
@@ -345,9 +345,9 @@ function weaponswap(){
 	$wlist = openfile($file);
 	$wnum = count($wlist)-1;
 	for ($i=0;$i<=$wnum;$i++){
-		list($on,$nn,$nk,$ne,$ns,$nsk) = explode(',',$wlist[$i]);
+		list($on,$nn,$nk,$ne,$ns,$nsk,$npara) = explode(',',$wlist[$i]);
 		if ($wep==$on){
-			$wep=$nn;$wepk=$nk;$wepe=$ne;$weps=$ns;$wepsk=$nsk;
+			$wep=$nn;$wepk=$nk;$wepe=$ne;$weps=$ns;$wepsk=$nsk;$weppara=$npara;
 			$log.="<span class=\"yellow\">{$oldw}</span>变换成了<span class=\"yellow\">{$wep}</span>。<br>";
 			return;
 		}

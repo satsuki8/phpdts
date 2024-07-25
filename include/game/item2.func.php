@@ -22,21 +22,23 @@ function use_func_item($usemode,$item)
 
 function poison($itmn = 0) {
 	global $mode,$log,$nosta,$art,$club,$pid;
-	global $itmp,${'itm'.$itmp},${'itms'.$itmp},${'itmk'.$itmp},${'itme'.$itmp},${'itmsk'.$itmp};
+	global $itmp,${'itm'.$itmp},${'itms'.$itmp},${'itmk'.$itmp},${'itme'.$itmp},${'itmsk'.$itmp}, ${'itmpara'. $itmp};
 	$poison = & ${'itm'.$itmp};
 	$poisonk = & ${'itmk'.$itmp};
 	$poisone = & ${'itme'.$itmp};
 	$poisons = & ${'itms'.$itmp};
 	$poisonsk = & ${'itmsk'.$itmp};
+	$poisonpara = & ${'itmpara'. $itmp};
 	if ( $itmn < 1 || $itmn > 6 ) {
 		$log .= '此道具不存在，请重新选择。';
 		$mode = 'command';
 		return;
 	}
-	global ${'itm'.$itmn},${'itmk'.$itmn},${'itmsk'.$itmn};
+	global ${'itm'.$itmn},${'itmk'.$itmn},${'itmsk'.$itmn}, ${'itmpara'. $itmn};
 	$itm = & ${'itm'.$itmn};
 	$itmk = & ${'itmk'.$itmn};
 	$itmsk = & ${'itmsk'.$itmn};
+	$itmpara = & ${'itmpara'. $itmn};
 	if(($poison != '毒药') || (strpos($itmk, 'H') !==0 && strpos($itmk, 'P') !== 0)) {
 		$log .= '道具选择错误，请重新选择。<br>';
 		$mode = 'command';
@@ -113,12 +115,14 @@ function wthchange($itm,$itmsk,$wlog=1){
 function hack($itmn = 0) {
 	global $log,$hack,$hack_obbs,$club,$clbpara,$now,$name,$alivenum,$deathnum,$hp,$state,$nick;
 	
-	global ${'itm'.$itmn},${'itmk'.$itmn},${'itme'.$itmn},${'itms'.$itmn},${'itmsk'.$itmn};
+	global ${'itm'.$itmn},${'itmk'.$itmn},${'itme'.$itmn},${'itms'.$itmn},${'itmsk'.$itmn}, ${'itmpara'. $itmn};
 	$itm = & ${'itm'.$itmn};
 	$itmk = & ${'itmk'.$itmn};
 	$itme = & ${'itme'.$itmn};
 	$itms = & ${'itms'.$itmn};
 	$itmsk = & ${'itmsk'.$itmn};
+	$itmpara = & ${'itmpara'. $itmn};
+
 
 	if(!$itms) {
 		$log .= '此道具不存在，请重新选择。<br>';
@@ -392,12 +396,13 @@ function divining2($u) {
 
 function deathnote($sfn,$itmd=0,$dnname='',$dndeath='',$dngender='m',$dnicon=1) {
 	global $db,$tablepre,$log,$killnum,$mode,$achievement,$pdata;
-	global ${'itm'.$itmd},${'itms'.$itmd},${'itmk'.$itmd},${'itme'.$itmd},${'itmsk'.$itmd};
+	global ${'itm'.$itmd},${'itms'.$itmd},${'itmk'.$itmd},${'itme'.$itmd},${'itmsk'.$itmd},${'itmpara'. $itmd};
 	$dn = & ${'itm'.$itmd};
 	$dnk = & ${'itmk'.$itmd};
 	$dne = & ${'itme'.$itmd};
 	$dns = & ${'itms'.$itmd};
 	$dnsk = & ${'itmsk'.$itmd};
+	$dnpara = & ${'itmpara'. $itmd};
 
 	$mode = 'command';
 
@@ -405,7 +410,7 @@ function deathnote($sfn,$itmd=0,$dnname='',$dndeath='',$dngender='m',$dnicon=1) 
 		$log .= '道具使用错误！<br>';
 		return;
 	} elseif($dns <= 0) {
-		$dn = $dnk = $dnsk = '';
+		$dn = $dnk = $dnsk = $dnpara = '';
 		$dne = $dns = 0;
 		$log .= '道具不存在！<br>';
 		return;
@@ -458,7 +463,7 @@ function deathnote($sfn,$itmd=0,$dnname='',$dndeath='',$dngender='m',$dnicon=1) 
 	$dns--;
 	if($dns<=0){
 		$log .= '■DeathNote■突然燃烧起来，转瞬间化成了灰烬。<br>';
-		$dn = $dnk = $dnsk = '';
+		$dn = $dnk = $dnsk = $dnpara = '';
 		$dne = $dns = 0;
 	}
 	return;
@@ -467,23 +472,25 @@ function deathnote($sfn,$itmd=0,$dnname='',$dndeath='',$dngender='m',$dnicon=1) 
 function qianghua($itmn = 0) {
 	global $mode,$log,$nosta,$name,$nick;
 	global $club;
-	global $itmp,${'itm'.$itmp},${'itms'.$itmp},${'itmk'.$itmp},${'itme'.$itmp},${'itmsk'.$itmp};
+	global $itmp,${'itm'.$itmp},${'itms'.$itmp},${'itmk'.$itmp},${'itme'.$itmp},${'itmsk'.$itmp}, ${'itmpara'. $itmp};
 	$baoshi = & ${'itm'.$itmp};
 	$baoshie = & ${'itme'.$itmp};
 	$baoshis = & ${'itms'.$itmp};
 	$baoshik = & ${'itmk'.$itmp};
 	$baoshisk = & ${'itmsk'.$itmp};	
+	$baoshipara = & ${'itmpara'. $itmp};
 	if ( $itmn < 1 || $itmn > 6 ) {
 		$log .= '此道具不存在，请重新选择。';
 		$mode = 'command';
 		return;
 	}
-	global ${'itm'.$itmn},${'itme'.$itmn},${'itms'.$itmn},${'itmk'.$itmn},${'itmsk'.$itmn};
+	global ${'itm'.$itmn},${'itme'.$itmn},${'itms'.$itmn},${'itmk'.$itmn},${'itmsk'.$itmn}, ${'itmpara'. $itmn};
 	$itm = & ${'itm'.$itmn};
 	$itme = & ${'itme'.$itmn};
 	$itms = & ${'itms'.$itmn};
 	$itmk = & ${'itmk'.$itmn};
 	$itmsk = & ${'itmsk'.$itmn};
+	$itmpara = & ${'itmpara'. $itmn};
 	if($baoshis <= 0 || ($baoshi != '『灵魂宝石』' && $baoshi != '『祝福宝石』')) {
 		$log .= '强化道具选择错误，请重新选择。<br>';
 		$mode = 'command';
@@ -590,7 +597,7 @@ function qianghua($itmn = 0) {
 	$baoshis--;
 	if($baoshis <= 0){
 		$log .= "<span class=\"red\">$baoshi</span> 用光了。<br>";
-		$baoshi = $baoshik = $baoshisk = '';$baoshie = $baoshis = 0;
+		$baoshi = $baoshik = $baoshisk = $baoshipara = '';$baoshie = $baoshis = 0;
 	}	
 	$mode = 'command';
 	return;
@@ -598,7 +605,7 @@ function qianghua($itmn = 0) {
 
 function nametag($item){
 	global $rename,$ntitm,$log,$now,$command,$mode,$nosta;
-	global ${'itm'.$ntitm},${'itms'.$ntitm},${'itmk'.$ntitm},${'itme'.$ntitm},${'itmsk'.$ntitm};
+	global ${'itm'.$ntitm},${'itms'.$ntitm},${'itmk'.$ntitm},${'itme'.$ntitm},${'itmsk'.$ntitm}, ${'itmpara'.$ntitm};
 	if(${'itm'.$ntitm} != '残响兵器' || ${'itmk'.$ntitm} != 'Y' || !${'itms'.$ntitm}){
 		$log .= "<span class=\"yellow\">道具不存在！</span><br>";
 		$mode = 'command';
@@ -611,19 +618,21 @@ function nametag($item){
 	}
 	if(strpos($item,'itm')===0){
 		$i = str_replace('itm','',$item);
-		global ${'itm'.$i},${'itms'.$i},${'itmk'.$i},${'itme'.$i},${'itmsk'.$i};
+		global ${'itm'.$i},${'itms'.$i},${'itmk'.$i},${'itme'.$i},${'itmsk'.$i}, ${'itmpara'.$i};
 		$rn = & ${'itm'.$i};
 		$rnk = & ${'itmk'.$i};
 		$rne = & ${'itme'.$i};
 		$rns = & ${'itms'.$i};
 		$rnsk = & ${'itmsk'.$i};
+		$rnpara = & ${'itmpara'.$i};
 	}else{
-		global ${$item},${$item.'k'}, ${$item.'e'}, ${$item.'s'},${$item.'sk'};
+		global ${$item},${$item.'k'}, ${$item.'e'}, ${$item.'s'},${$item.'sk'}, ${$item.'para'};
 		$rn = & ${$item};
 		$rnk = & ${$item.'k'};
 		$rne = & ${$item.'e'};
 		$rns = & ${$item.'s'};
 		$rnsk = & ${$item.'sk'};
+		$rnpara = & ${$item.'para'};
 	}
 	
 	
@@ -654,7 +663,7 @@ function nametag($item){
 		${'itms'.$ntitm} --;
 		if(${'itms'.$ntitm} <= 0){
 			$log .= "<span class=\"yellow\">{${'itm'.$ntitm}}用完了。</span><br>";
-			${'itm'.$ntitm} = ${'itmk'.$ntitm} = ${'itmsk'.$ntitm} = '';
+			${'itm'.$ntitm} = ${'itmk'.$ntitm} = ${'itmsk'.$ntitm} = ${'itmpara'.$ntitm} = '';
 			${'itms'.$ntitm} = ${'itme'.$ntitm} = 0;		
 		}
 	}

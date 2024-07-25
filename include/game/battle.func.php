@@ -171,6 +171,7 @@ function senditem()
 		$itme = & ${'itme'.$itmn};
 		$itms = & ${'itms'.$itmn};
 		$itmsk = & ${'itmsk'.$itmn};
+		$itmpara = & ${'itmpara'.$itmn};
 
 		# 诅咒道具不能赠予，不准祸水东引！
 		if(in_array('V',get_itmsk_array($itmsk)))
@@ -192,6 +193,7 @@ function senditem()
 				$edata['itme'.$i] = $itme;
 				$edata['itms'.$i] = $itms;
 				$edata['itmsk'.$i] = $itmsk;
+				$edata['itmpara'.$i] = $itmpara;
 				$log .= "你将<span class=\"yellow\">{$edata['itm'.$i]}</span>送给了<span class=\"yellow\">$w_name</span>。<br>";
 				$w_log = "<span class=\"yellow\">$name</span>将<span class=\"yellow\">{$edata['itm'.$i]}</span>送给了你。";
 				if(!$w_type){logsave($w_pid,$now,$w_log,'t');}
@@ -199,7 +201,7 @@ function senditem()
 				addnews($now,'senditem',$name,$w_name,$itm,$nick);
 				//w_save($w_pid);
 				player_save($edata);
-				$itm = $itmk = $itmsk = '';
+				$itm = $itmk = $itmsk = $itmpara = '';
 				$itme = $itms = 0;
 				$action = ''; $bid = 0;
 				return;

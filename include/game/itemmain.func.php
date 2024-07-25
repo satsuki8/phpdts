@@ -563,6 +563,7 @@ function itemdrop($item,&$data=NULL) {
 		$itme = & ${'itme'.$itmn};
 		$itms = & ${'itms'.$itmn};
 		$itmsk = & ${'itmsk'.$itmn};
+		$itmpara = & ${'itmpara'.$itmn};
 	}
 	//PORT
 	if(strpos($itmsk,'^')!==false){
@@ -626,9 +627,10 @@ function itemdrop($item,&$data=NULL) {
 		$itmsk = '';
 		$itmk = 'WN';
 		$itme = 0;
+		$itmpara = '';
 		$itms = $nosta;
 	} else {
-		$itm = $itmk = $itmsk = '';
+		$itm = $itmk = $itmsk = $itmpara = '';
 		$itme = $itms = 0;
 	}
 	$mode = 'command';
@@ -639,20 +641,22 @@ function itemoff($item){
 	global $log,$mode,$cmd,$itm0,$itmk0,$itme0,$itms0,$itmsk0,$nosta,$pdata;
 
 	if($item == 'wep'){
-		global $wep,$wepk,$wepe,$weps,$wepsk;
+		global $wep,$wepk,$wepe,$weps,$wepsk, $weppara;
 		$itm = & $wep;
 		$itmk = & $wepk;
 		$itme = & $wepe;
 		$itms = & $weps;
 		$itmsk = & $wepsk;
+		$itmpara = & $weppara;
 	} elseif(strpos($item,'ar') === 0) {
 		$itmn = substr($item,2,1);
-		global ${'ar'.$itmn},${'ar'.$itmn.'k'},${'ar'.$itmn.'e'},${'ar'.$itmn.'s'},${'ar'.$itmn.'sk'};
+		global ${'ar'.$itmn},${'ar'.$itmn.'k'},${'ar'.$itmn.'e'},${'ar'.$itmn.'s'},${'ar'.$itmn.'sk'}, ${'ar'.$itmn.'para'};
 		$itm = & ${'ar'.$itmn};
 		$itmk = & ${'ar'.$itmn.'k'};
 		$itme = & ${'ar'.$itmn.'e'};
 		$itms = & ${'ar'.$itmn.'s'};
 		$itmsk = & ${'ar'.$itmn.'sk'};
+		$itmpara = & ${'ar'.$itmn.'para'};
 	}
 	if(!$itms||!$itmk||$itmk=='WN'||$itmk=='DN'){
 		$log .= '该物品不存在！<br>';
@@ -682,15 +686,17 @@ function itemoff($item){
 	$itme0 = $itme;
 	$itms0 = $itms;
 	$itmsk0 = $itmsk;
+	$itmpara0 = $itmpara;
 	
 	if($item == 'wep'){
 	$itm = '拳头';
 	$itmsk = '';
 	$itmk = 'WN';
 	$itme = 0;
+	$itmpara = '';
 	$itms = $nosta;
 	} else {
-	$itm = $itmk = $itmsk = '';
+	$itm = $itmk = $itmsk = $itmpara = '';
 	$itme = $itms = 0;
 	}
 	itemget();
@@ -722,7 +728,8 @@ function itemadd(&$data=NULL)
 			${'itme'.$i} = $itme0;
 			${'itms'.$i} = $itms0;
 			${'itmsk'.$i} = $itmsk0;
-			$itm0 = $itmk0 = $itmsk = '';
+			${'itmpara'.$i} = $itmpara0;
+			$itm0 = $itmk0 = $itmsk = $itmpara = '';
 			$itme0 = $itms0 = 0;
 			$mode = 'command';
 			return;
@@ -753,18 +760,20 @@ function itemmerge($itn1,$itn2){
 		return;
 	}
 	
-	global $nosta,${'itm'.$itn1},${'itmk'.$itn1},${'itme'.$itn1},${'itms'.$itn1},${'itmsk'.$itn1},${'itm'.$itn2},${'itmk'.$itn2},${'itme'.$itn2},${'itms'.$itn2},${'itmsk'.$itn2};
+	global $nosta,${'itm'.$itn1},${'itmk'.$itn1},${'itme'.$itn1},${'itms'.$itn1},${'itmsk'.$itn1},${'itm'.$itn2},${'itmk'.$itn2},${'itme'.$itn2},${'itms'.$itn2},${'itmsk'.$itn2}, ${'itmpara'.$itn1}, ${'itmpara'.$itn2};
 	
 	$it1 = & ${'itm'.$itn1};
 	$itk1 = & ${'itmk'.$itn1};
 	$ite1 = & ${'itme'.$itn1};
 	$its1 = & ${'itms'.$itn1};
 	$itsk1 = & ${'itmsk'.$itn1};
+	$itpara1 = & ${'itmpara'.$itn1};
 	$it2 = & ${'itm'.$itn2};
 	$itk2 = & ${'itmk'.$itn2};
 	$ite2 = & ${'itme'.$itn2};
 	$its2 = & ${'itms'.$itn2};
 	$itsk2 = & ${'itmsk'.$itn2};
+	$itpara2 = & ${'itmpara'.$itn2};
 	
 	if(!$its1 || !$its2) {
 		$log .= '请选择正确的物品进行合并！';
@@ -781,7 +790,7 @@ function itemmerge($itn1,$itn2){
 	if(($it1 == $it2)&&($ite1 == $ite2)) {
 		if(($itk1==$itk2)&&($itsk1==$itsk2)&&preg_match('/^(WC|WD|WF|Y|B|C|TN|GA|GB|V|M)/',$itk1)) {
 			$its2 += $its1;
-			$it1 = $itk1 = $itsk1 = '';
+			$it1 = $itk1 = $itsk1 = $itpara1 = '';
 			$ite1 = $its1 = 0;
 			$log .= "你合并了<span class=\"yellow\">$it2</span>。";
 			$mode = 'command';
@@ -798,7 +807,7 @@ function itemmerge($itn1,$itn2){
 					}
 			}
 			$its2 += $its1;
-			$it1 = $itk1 = $itsk1 = '';
+			$it1 = $itk1 = $itsk1 = $itpara1 = '';
 			$ite1 = $its1 = 0;
 			
 			$log .= "你合并了 <span class=\"yellow\">$it2</span>。";
@@ -1147,12 +1156,13 @@ function itemreduce($item,$mode=0){ //只限合成使用！！
 	global $log;
 	if(strpos($item,'itm') === 0) {
 		$itmn = substr($item,3,1);
-		global ${'itm'.$itmn},${'itmk'.$itmn},${'itme'.$itmn},${'itms'.$itmn},${'itmsk'.$itmn};
+		global ${'itm'.$itmn},${'itmk'.$itmn},${'itme'.$itmn},${'itms'.$itmn},${'itmsk'.$itmn},${'itmpara'.$itmn};
 		$itm = & ${'itm'.$itmn};
 		$itmk = & ${'itmk'.$itmn};
 		$itme = & ${'itme'.$itmn};
 		$itms = & ${'itms'.$itmn};
 		$itmsk = & ${'itmsk'.$itmn};
+		$itmpara = & ${'itmpara'.$itmn};
 	} else {
 		return;
 	}
@@ -1165,7 +1175,7 @@ function itemreduce($item,$mode=0){ //只限合成使用！！
 		if($itms == '∞'){
 			$itms = 0;
 			$log .= "<span class=\"red\">$itm</span>消失了……它已被";
-			$itm = $itmk = $itmsk = '';
+			$itm = $itmk = $itmsk = $itmpara = '';
 			$itme = $itms = 0;
 		}else{
 		$itms--;}
@@ -1179,7 +1189,7 @@ function itemreduce($item,$mode=0){ //只限合成使用！！
 	if($itms <= 0) {
 		$itms = 0;
 		$log .= "<span class=\"red\">$itm</span>用光了。<br>";
-		$itm = $itmk = $itmsk = '';
+		$itm = $itmk = $itmsk = $itmpara = '';
 		$itme = $itms = 0;
 	}
 	return;
@@ -1194,17 +1204,19 @@ function itemmove($from,$to){
 		$log .= '同一物品无法互换。<br>';
 		return;
 	}
-	global ${'itm'.$from},${'itmk'.$from},${'itme'.$from},${'itms'.$from},${'itmsk'.$from},${'itm'.$to},${'itmk'.$to},${'itme'.$to},${'itms'.$to},${'itmsk'.$to};
+	global ${'itm'.$from},${'itmk'.$from},${'itme'.$from},${'itms'.$from},${'itmsk'.$from},${'itm'.$to},${'itmk'.$to},${'itme'.$to},${'itms'.$to},${'itmsk'.$to},${'itmpara'.$from},${'itmpara'.$to};
 	$f = & ${'itm'.$from};
 	$fk = & ${'itmk'.$from};
 	$fe = & ${'itme'.$from};
 	$fs = & ${'itms'.$from};
 	$fsk = & ${'itmsk'.$from};
+	$fpara = & ${'itmpara'.$from};
 	$t = & ${'itm'.$to};
 	$tk = & ${'itmk'.$to};
 	$te = & ${'itme'.$to};
 	$ts = & ${'itms'.$to};
 	$tsk = & ${'itmsk'.$to};
+	$tpara = & ${'itmpara'.$to};
 	if(!$fs){
 		$log .= '错误的道具参数。<br>';
 		return;
@@ -1216,7 +1228,8 @@ function itemmove($from,$to){
 		$te = $fe;
 		$ts = $fs;
 		$tsk = $fsk;
-		$f = $fk = $fsk = '';
+		$tpara = $fpara;
+		$f = $fk = $fsk = $fpara = '';
 		$fe = $fs = 0;
 		
 	}else {
@@ -1226,16 +1239,19 @@ function itemmove($from,$to){
 		$tempe = $te;
 		$temps = $ts;
 		$tempsk = $tsk;
+		$temppara = $tpara;
 		$t = $f;
 		$tk = $fk;
 		$te = $fe;
 		$ts = $fs;
 		$tsk = $fsk;
+		$tpara = $fpara;
 		$f = $temp;
 		$fk = $tempk;
 		$fe = $tempe;
 		$fs = $temps;
 		$fsk = $tempsk;
+		$fpara = $temppara;
 		
 	}
 	return;
@@ -1320,6 +1336,7 @@ function itembuy($item,$shop,$bnum=1,&$data=NULL)
 	$itme0 = $iteminfo['itme'];
 	$itms0 = $iteminfo['itms']*$bnum;
 	$itmsk0 = $iteminfo['itmsk'];
+	$itmpara0 = $iteminfo['itmpara'];
 
 	itemget($data);	
 	return;
@@ -1463,7 +1480,8 @@ function getcorpse($item,&$data=NULL)
 		$itme0 = $edata[$item.'e'];
 		$itms0 = $edata[$item.'s'];
 		$itmsk0 = $edata[$item.'sk'];
-		$edata[$item] = $edata[$item.'k'] = $edata[$item.'sk'] = '';
+		$itmpara0 = $edata[$item.'para'];
+		$edata[$item] = $edata[$item.'k'] = $edata[$item.'sk'] = $edata[$item.'para'] = '';
 		$edata[$item.'e'] = $edata[$item.'s'] = 0;  
 	} elseif(strpos($item,'ar') === 0) {
 		$itm0 = $edata[$item];
@@ -1471,7 +1489,8 @@ function getcorpse($item,&$data=NULL)
 		$itme0 = $edata[$item.'e'];
 		$itms0 = $edata[$item.'s'];
 		$itmsk0 = $edata[$item.'sk'];
-		$edata[$item] = $edata[$item.'k'] = $edata[$item.'sk'] = '';
+		$itmpara0 = $edata[$item.'para'];
+		$edata[$item] = $edata[$item.'k'] = $edata[$item.'sk'] = $edata[$item.'para'] = '';
 		$edata[$item.'e'] = $edata[$item.'s'] = 0;  
 	} elseif(strpos($item,'itm') === 0) {
 		$itmn = substr($item,3,1);
@@ -1480,7 +1499,8 @@ function getcorpse($item,&$data=NULL)
 		$itme0 = $edata['itme'.$itmn];
 		$itms0 = $edata['itms'.$itmn];
 		$itmsk0 = $edata['itmsk'.$itmn];
-		$edata['itm'.$itmn] = $edata['itmk'.$itmn] = $edata['itmsk'.$itmn] = '';
+		$itmpara0 = $edata['itmpara'.$itmn];
+		$edata['itm'.$itmn] = $edata['itmk'.$itmn] = $edata['itmsk'.$itmn] = $edata['itmpara'.$itmn] = '';
 		$edata['itme'.$itmn] = $edata['itms'.$itmn] = 0;  
 	} elseif($item == 'money') {
 		$money += $edata['money'];
@@ -1527,9 +1547,10 @@ function change_subwep($s=2,&$data=NULL)
     $seqpe = $seqp.'e';
     $seqps = $seqp.'s';
     $seqpsk = $seqp.'sk';
+	$seqpara = $seqp.'para';
     # 保存副武器数据
     $swep=${$seqp}; $swepk=${$seqpk};
-    $swepe=${$seqpe}; $sweps=${$seqps}; $swepsk=${$seqpsk};
+    $swepe=${$seqpe}; $sweps=${$seqps}; $swepsk=${$seqpsk}; $sweppara=${$seqpara};
 
     # 切换时，检查主手是否为空
     $no_wepflag = 0;
@@ -1543,7 +1564,7 @@ function change_subwep($s=2,&$data=NULL)
     if(empty($swep) || ($swepk == 'WN' && $swep == $nowep && empty($swepe) && $sweps == $nosta && empty($swepsk)))
     {
         $swep = $nowep; $swepk = 'WN';
-        $swepe = 0; $sweps = $nosta; $swepsk = '';
+        $swepe = 0; $sweps = $nosta; $swepsk = ''; $sweppara = '';
         $no_swepflag = 1;
     }
 
@@ -1552,6 +1573,7 @@ function change_subwep($s=2,&$data=NULL)
     ${$seqpe} = ${$eqp.'e'}; ${$eqp.'e'} = $swepe; 
     ${$seqps} = ${$eqp.'s'}; ${$eqp.'s'} = $sweps; 
     ${$seqpsk} = ${$eqp.'sk'}; ${$eqp.'sk'} = $swepsk; 
+	${$seqpara} = ${$eqp.'para'}; ${$eqp.'para'} = $sweppara;
 
     $sweplog = '';
     if(!$no_wepflag) $sweplog.="收起了<span class='yellow'>{$wep2}</span>";
@@ -1576,7 +1598,7 @@ function destory_single_equip(&$pa,$equip)
 
 	if(in_array($equip,$equip_list))
 	{
-		$pa[$equip] = $pa[$equip.'k'] = $pa[$equip.'sk'] = '';
+		$pa[$equip] = $pa[$equip.'k'] = $pa[$equip.'sk'] = $pa[$equip.'para'] = '';
 		$pa[$equip.'e'] = $pa[$equip.'s'] = 0;
 		reload_equip_items($pa);
 	}
@@ -1601,7 +1623,7 @@ function destory_single_item(&$pa,$i,$costlog=0)
 		{
 			$log .= "<span class=\"red\">{$pa['itm'.$i]}</span>用光了。<br>";
 		}
-		$pa['itm'.$i] = $pa['itmk'.$i] = $pa['itmsk'.$i] = '';
+		$pa['itm'.$i] = $pa['itmk'.$i] = $pa['itmsk'.$i] = $pa['itmpara'.$i] = '';
 		$pa['itme'.$i] = $pa['itms'.$i] = 0;
 	}
 	else 
@@ -1625,6 +1647,7 @@ function reload_equip_items(&$pa)
 		$pa['wepe'] = 0;
 		$pa['weps'] = $nosta;
 		$pa['wepsk'] = '';
+		$pa['weppara'] = '';
 	}
 
 	if(empty($pa['arb']) || empty($pa['arbs']))
@@ -1634,6 +1657,7 @@ function reload_equip_items(&$pa)
 		$pa['arbe'] = 0;
 		$pa['arbs'] = $nosta;
 		$pa['arbsk'] = '';
+		$pa['arbpara'] = '';
 	}
 	return;
 }
@@ -1901,11 +1925,11 @@ function armor_hurt(&$pa,$which,$hurtvalue,$check_sk=0)
 			if($which == 'arb')
 			{
 				$pa[$which] = '内衣'; $pa[$which.'k'] = 'DN';
-				$pa[$which.'e'] = 0; $pa[$which.'s'] = $nosta; $pa[$which.'sk'] = '';
+				$pa[$which.'e'] = 0; $pa[$which.'s'] = $nosta; $pa[$which.'sk'] = ''; $pa[$which.'para'] = '';
 			}
 			else 
 			{
-				$pa[$which] = $pa[$which.'k'] = $pa[$which.'sk'] = '';
+				$pa[$which] = $pa[$which.'k'] = $pa[$which.'sk'] = ''; $pa[$which.'para'] = '';
 				$pa[$which.'e'] = $pa[$which.'s'] = 0; 
 			}
 			return -1;

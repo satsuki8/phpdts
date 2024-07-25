@@ -58,7 +58,7 @@
 		global $db,$tablepre,$arealist,$areanum,$hack;
 		global $log,$pls,$name,$type,$money;
 		global $max_saveitem_num,$saveitem_cost,$loaditem_cost,$depots;	
-		global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
+		global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i},${'itmpara'.$i};
 
 		$i = (int)$i;
 		if(!in_array($pls,$depots))
@@ -103,11 +103,11 @@
 
 		$money -= $saveitem_cost;
 		$log.="你成功将道具<span class='yellow'>{${'itm'.$i}}</span>存进了安全箱内！<br>同时被迫支付了手续费<span class='yellow'>{$saveitem_cost}</span>元。<br>";
-		$itm=&${'itm'.$i};$itmk=&${'itmk'.$i};$itmsk=&${'itmsk'.$i};
+		$itm=&${'itm'.$i};$itmk=&${'itmk'.$i};$itmsk=&${'itmsk'.$i};$itmpara=${'itmpara'.$i};
 		$itme=&${'itme'.$i};$itms=&${'itms'.$i};
 		addnews($now,'depot_save',$name,${'itm'.$i});
-		$db->query("INSERT INTO {$tablepre}itemdepot (itm, itmk, itme, itms, itmsk ,itmowner, itmpw) VALUES ('$itm', '$itmk', '$itme', '$itms', '$itmsk', '$name', '$type')");
-		$itm='';$itmk='';$itmsk='';
+		$db->query("INSERT INTO {$tablepre}itemdepot (itm, itmk, itme, itms, itmsk , itmpara ,itmowner, itmpw) VALUES ('$itm', '$itmk', '$itme', '$itms', '$itmsk', '$itmpara', '$name', '$type')");
+		$itm='';$itmk='';$itmsk='';$itmpara='';
 		$itme=0;$itms=0;
 	}
 
@@ -116,7 +116,7 @@
 		global $db,$tablepre,$arealist,$areanum,$hack;
 		global $log,$pls,$name,$type,$money;
 		global $max_saveitem_num,$saveitem_cost,$loaditem_cost,$depots;	
-		global $itm0,$itmk0,$itme0,$itms0,$itmsk0;
+		global $itm0,$itmk0,$itme0,$itms0,$itmsk0,$itmpara0;
 
 		$i = (int)$i;
 		if(!in_array($pls,$depots))
@@ -148,6 +148,7 @@
 		$itme0= $idpt[$i]['itme'];
 		$itms0= $idpt[$i]['itms'];
 		$itmsk0= $idpt[$i]['itmsk'];
+		$itmpara0= $idpt[$i]['itmpara'];
 		$iid = $idpt[$i]['iid'];
 		addnews($now,'depot_load',$name,$itm0);
 		$log.="你成功将道具<span class='yellow'>{$itm0}</span>从安全箱中取了出来！<br>同时被迫支付了保管费<span class='yellow'>{$loaditem_cost}</span>元……你感觉自己的心在滴血。<br>";

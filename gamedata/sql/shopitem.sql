@@ -14,6 +14,7 @@ CREATE TABLE bra_shopitem (
   itme int(10) unsigned NOT NULL DEFAULT '0',
   itms char(10) not null default '0',
   itmsk char(40) not null default '',
+  itmpara text not null,
 
   PRIMARY KEY  (sid),
   INDEX KIND (kind, area)

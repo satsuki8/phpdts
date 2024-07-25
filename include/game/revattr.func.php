@@ -1129,6 +1129,21 @@ namespace revattr
 			$dmg_p[]= $p; 
 			$log.="<span class='yellow'>{$pa['nm']}耻于使用武器战斗！造成的物理伤害降低了{$sk_p}%！</span><br>";
 		}
+
+		# Additional $weppara + $artpara check - Additional Damage Percentage
+		if(isset($pa['weppara']['AddDamagePercentage']) && $pa['weppara']['AddDamagePercentage'] > 0){
+			$p = 1 + ($pa['weppara']['AddDamagePercentage'] / 100);
+			$dmg_p[]= $p;
+			$log .= "<span class='yellow'>{$pa['nm']}的武器的特殊效应让造成的伤害增加了{$p}倍！</span><br>";
+		}
+
+		# Additional $artpara check - Additional Damage Percentage
+		if(isset($pa['artpara']['AddDamagePercentage']) && $pa['artpara']['AddDamagePercentage'] > 0){
+			$p = 1 + ($pa['artpara']['AddDamagePercentage'] / 100);
+			$dmg_p[]= $p;
+			$log .= "<span class='yellow'>{$pa['nm']}的饰品的特殊效应让造成的伤害增加了{$p}倍！</span><br>";
+		}
+
 		return $dmg_p;
 	}
 
@@ -1842,6 +1857,33 @@ namespace revattr
 				$fin_dmg_p[] = $p;
 			}
 		}
+
+		# pd $arXPara check - Damage Decrease percentage
+		if(isset($pd['arbpara']['DecreaseDamagePercentage']) && ($pd['arbpara']['DecreaseDamagePercentage'] > 0) ){
+			$p = 1 - ($pd['arbpara']['DecreaseDamagePercentage'] / 100);
+			$log.="<span class=\"yellow\">在身体装备的特殊作用下，{$pa['nm']}造成的最终伤害降低了{$pd['arbpara']['DecreaseDamagePercentage']}%! </span><br>";
+			$fin_dmg_p[] = $p;
+		}
+		if(isset($pd['arhpara']['DecreaseDamagePercentage']) && ($pd['arhpara']['DecreaseDamagePercentage'] > 0) ){
+			$p = 1 - ($pd['arhpara']['DecreaseDamagePercentage'] / 100);
+			$log.="<span class=\"yellow\">在头部装备的特殊作用下，{$pa['nm']}造成的最终伤害降低了{$pd['arhpara']['DecreaseDamagePercentage']}%! </span><br>";
+			$fin_dmg_p[] = $p;
+		}
+		if(isset($pd['arapara']['DecreaseDamagePercentage']) && ($pd['arapara']['DecreaseDamagePercentage'] > 0) ){
+			$p = 1 - ($pd['arapara']['DecreaseDamagePercentage'] / 100);
+			$log.="<span class=\"yellow\">在手部装备的特殊作用下，{$pa['nm']}造成的最终伤害降低了{$pd['arapara']['DecreaseDamagePercentage']}%! </span><br>";
+			$fin_dmg_p[] = $p;
+		}
+		if(isset($pd['arfpara']['DecreaseDamagePercentage']) && ($pd['arfpara']['DecreaseDamagePercentage'] > 0) ){
+			$p = 1 - ($pd['arfpara']['DecreaseDamagePercentage'] / 100);
+			$log.="<span class=\"yellow\">在足部装备的特殊作用下，{$pa['nm']}造成的最终伤害降低了{$pd['arfpara']['DecreaseDamagePercentage']}%! </span><br>";
+			$fin_dmg_p[] = $p;
+		}
+		if(isset($pd['artpara']['DecreaseDamagePercentage']) && ($pd['artpara']['DecreaseDamagePercentage'] > 0) ){
+			$p = 1 - ($pd['artpara']['DecreaseDamagePercentage'] / 100);
+			$log.="<span class=\"yellow\">在饰品装备的特殊作用下，{$pa['nm']}造成的最终伤害降低了{$pd['artpara']['DecreaseDamagePercentage']}%! </span><br>";
+			$fin_dmg_p[] = $p;
+		}
 		return $fin_dmg_p;
 	}
 
@@ -2139,6 +2181,44 @@ namespace revattr
 		{
 			$fin_dmg =  $pd['hp'];
 			$log .= "<span class=\"yellow\">{$pa['nm']}的攻击直接将{$pd['nm']}爆头！</span><br>";
+		}
+
+		# Additional $weppara check - Additional Raw Damage
+		if(isset($pa['weppara']['AddDamageRaw']) && $pa['weppara']['AddDamageRaw'] > 0){
+			$fin_dmg += $pa['weppara']['AddDamageRaw'];
+			$log .= "<span class=\"yellow\">{$pa['nm']}的武器的特殊效应让造成的伤害增加了{$pa['weppara']['AddDamageRaw']}点！</span><br>";
+		}
+		# Additional pa $artpara check - Additional Raw Damage
+		if(isset($pa['artpara']['AddDamageRaw']) && $pa['artpara']['AddDamageRaw'] > 0){
+			$fin_dmg += $pa['artpara']['AddDamageRaw'];
+			$log .= "<span class=\"yellow\">{$pa['nm']}的饰品的特殊效应让造成的伤害增加了{$pa['artpara']['AddDamageRaw']}点！</span><br>";
+		}
+
+		# Additional pd $arXPara check - Damage Decrease Raw
+		if(isset($pd['arbpara']['DecreaseDamageRaw']) && ($pd['arbpara']['DecreaseDamageRaw'] > 0) ){
+			$fin_dmg -= $pd['arbpara']['DecreaseDamageRaw'];
+			$log.="<span class=\"yellow\">在身体装备的特殊作用下，{$pa['nm']}造成的最终伤害降低了{$pd['arbpara']['DecreaseDamageRaw']}! </span><br>";
+			$fin_dmg_p[] = $p;
+		}
+		if(isset($pd['arhpara']['DecreaseDamageRaw']) && ($pd['arhpara']['DecreaseDamageRaw'] > 0) ){
+			$fin_dmg -= $pd['arhpara']['DecreaseDamageRaw'];
+			$log.="<span class=\"yellow\">在头部装备的特殊作用下，{$pa['nm']}造成的最终伤害降低了{$pd['arhpara']['DecreaseDamageRaw']}! </span><br>";
+			$fin_dmg_p[] = $p;
+		}
+		if(isset($pd['arapara']['DecreaseDamageRaw']) && ($pd['arapara']['DecreaseDamageRaw'] > 0) ){
+			$fin_dmg -= $pd['arapara']['DecreaseDamageRaw'];
+			$log.="<span class=\"yellow\">在手部装备的特殊作用下，{$pa['nm']}造成的最终伤害降低了{$pd['arapara']['DecreaseDamageRaw']}! </span><br>";
+			$fin_dmg_p[] = $p;
+		}
+		if(isset($pd['arfpara']['DecreaseDamageRaw']) && ($pd['arfpara']['DecreaseDamageRaw'] > 0) ){
+			$fin_dmg -= $pd['arfpara']['DecreaseDamageRaw'];
+			$log.="<span class=\"yellow\">在足部装备的特殊作用下，{$pa['nm']}造成的最终伤害降低了{$pd['arfpara']['DecreaseDamageRaw']}! </span><br>";
+			$fin_dmg_p[] = $p;
+		}
+		if(isset($pd['artpara']['DecreaseDamageRaw']) && ($pd['artpara']['DecreaseDamageRaw'] > 0) ){
+			$fin_dmg -= $pd['artpara']['DecreaseDamageRaw'];
+			$log.="<span class=\"yellow\">在饰品装备的特殊作用下，{$pa['nm']}造成的最终伤害降低了{$pd['artpara']['DecreaseDamageRaw']}! </span><br>";
+			$fin_dmg_p[] = $p;
 		}
 
 		return $fin_dmg;

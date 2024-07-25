@@ -156,6 +156,7 @@ function rs_game($mode = 0) {
 	}
 	if ($mode & 16) {
 		//echo " - 地图道具/陷阱初始化 - ";
+		//2024-07-19 No itmpara is intended to initially spawn in the map, thus this is unchanged for now - will change if a need arises.
 		//感谢 Martin1994 提供地图道具数据库化的源代码
 		$plsnum = sizeof($plsinfo);
 		$iqry = $tqry = '';
@@ -240,16 +241,17 @@ function rs_game($mode = 0) {
 			{
 				foreach($nd_arr['itm'] as $nd_itm_arr)
 				{
-					$ditm = $nd_itm_arr['itm'];$ditmk = $nd_itm_arr['itmk'];$ditmsk = $nd_itm_arr['itmsk'];
+					$ditm = $nd_itm_arr['itm'];$ditmk = $nd_itm_arr['itmk'];$ditmsk = $nd_itm_arr['itmsk'];$ditmpara = $nd_itm_arr['itmpara'];
 					$ditme = $nd_itm_arr['itme'];$ditms = $nd_itm_arr['itms'];
 					$dname = $nd_arr['name'];$dtype = $nd_arr['type'];
-					$db->query("INSERT INTO {$tablepre}itemdepot (itm, itmk, itme, itms, itmsk ,itmowner, itmpw) VALUES ('$ditm', '$ditmk', '$ditme', '$ditms', '$ditmsk', '$dname', '$dtype')");
+					$db->query("INSERT INTO {$tablepre}itemdepot (itm, itmk, itme, itms, itmsk , itmpara, itmowner, itmpw) VALUES ('$ditm', '$ditmk', '$ditme', '$ditms', '$ditmsk', '$ditmpara', '$dname', '$dtype')");
 				}
 			}
 		}
 	}
 	if ($mode & 32) {
 		//echo " - 商店初始化 - ";
+		//2024-07-19 No itmpara is intended to initially spawn in the shop, thus this is unchanged for now - will change if a need arises.
 		$sql = file_get_contents("{$sqldir}shopitem.sql");
 		$sql = str_replace("\r", "\n", str_replace(' bra_', ' '.$tablepre, $sql));
 		$db->queries($sql);

@@ -106,27 +106,28 @@ function item_info(){
 function item_encase($ilist){
 	global $log,$getitem,$itmnum,$itmnumlimit;
 	foreach($ilist as $i){
-		global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
+		global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i}, ${'itmpara'.$i};
 		$git_list = decode_item($getitem);
 		$itm = &${'itm'.$i};
 		$itmk = &${'itmk'.$i};
 		$itme = &${'itme'.$i};
 		$itms = &${'itms'.$i};
 		$itmsk = &${'itmsk'.$i};
+		$itmpara = &${'itmpara'.$i};
 		if(strpos($itmsk,'V')!==false || strpos($itmsk,'v')!==false){
 			$log.="诅咒和灵魂绑定的装备无法存放在背包内。<br>";
 		}elseif(round(sizeof($git_list)+1+$itmnum) > $itmnumlimit){
 			$log.="背包已满，无法继续放入道具。<br>";
 		}else{
-			item_find($itm,$itmk,$itme,$itms,$itmsk);
-			$itm = $itmk = $itmsk = '';
+			item_find($itm,$itmk,$itme,$itms,$itmsk, $itmpara);
+			$itm = $itmk = $itmsk = $itmpara = '';
 			$itme = $itms = 0;
 		}
 	}
 	item_get();
 }
 //发现道具
-function item_find($itm,$itmk,$itme,$itms,$itmsk){
+function item_find($itm,$itmk,$itme,$itms,$itmsk, $itmpara){
 	global $getitem;
 	$git_list = decode_item($getitem);
 	$gitarr = Array(
@@ -135,6 +136,7 @@ function item_find($itm,$itmk,$itme,$itms,$itmsk){
 		'itme' => $itme,
 		'itms' => $itms,
 		'itmsk' => $itmsk,
+		'itmpara' => $itmpara,
 	);
 	array_push($git_list,$gitarr);
 	$getitem = json_encode_comp($git_list);
@@ -152,6 +154,7 @@ function item_get(){
 		$gite = $git_list[$gid]['itme'];
 		$gits = $git_list[$gid]['itms'];
 		$gitsk = $git_list[$gid]['itmsk'];
+		$gitpara = $git_list[$gid]['itmpara'];
 		if(!$gits || !$gitk || !$git){
 			$log.="获取道具的相关信息失败。<br>";
 		}else{
@@ -222,6 +225,7 @@ function item_get(){
 						'itme' => $gite,
 						'itms' => $gits,
 						'itmsk' => $gitsk,
+						'itmpara' => $gitpara,
 					);
 					array_push($item_list,$gitarr);
 					$log.="你向背包中存入了<span class=\"yellow\">{$git}</span>。<br>";
@@ -236,7 +240,7 @@ function item_get(){
 //处理取出道具
 function item_out($iid){
 	global $itembag,$itmnum;
-	global $log,$itm0,$itmk0,$itme0,$itms0,$itmsk0;
+	global $log,$itm0,$itmk0,$itme0,$itms0,$itmsk0, $itmpara0;
 	$item_list = decode_item($itembag);
 	if(!in_array($iid,array_keys($item_list))){
 		$log .= '此道具不存在，请重新选择。<br>';
@@ -251,6 +255,7 @@ function item_out($iid){
 	$itme0 = $item_list[$iid]['itme'];
 	$itms0 = $item_list[$iid]['itms'];
 	$itmsk0 = $item_list[$iid]['itmsk'];
+	$itmpara0 = $item_list[$iid]['itmpara'];
 	unset($item_list[$iid]);
 	$itmnum = sizeof(array_keys($item_list));
 	$itembag = json_encode_comp($item_list);
@@ -284,7 +289,8 @@ function drop_itembag(){
 		$itme = $item_list[$iid]['itme'];
 		$itms = $item_list[$iid]['itms'];
 		$itmsk = $item_list[$iid]['itmsk'];
-		$db->query("INSERT INTO {$tablepre}mapitem (itm, itmk, itme, itms, itmsk ,pls) VALUES ('$itm', '$itmk', '$itme', '$itms', '$itmsk', '$pls')");
+		$itmpara = $item_list[$iid]['itmpara'];
+		$db->query("INSERT INTO {$tablepre}mapitem (itm, itmk, itme, itms, itmsk ,itmpara, pls) VALUES ('$itm', '$itmk', '$itme', '$itms', '$itmsk', '$itmpara', '$pls')");
 	}
 	$log.="你将背包连同里面的道具一同丢掉了。<br>";
 	$itmnum = $itmnumlimit = 0;
@@ -293,7 +299,7 @@ function drop_itembag(){
 }
 //拾取背包时对是否替换进行判断
 function replace_itembag(&$keep){
-	global $itm0,$itmk0,$itme0,$itms0,$itmsk0;
+	global $itm0,$itmk0,$itme0,$itms0,$itmsk0,$itmpara0;
 	global $arb,$arbk,$arbe,$arbs,$arbsk;
 	global $itmnumlimit,$log,$mode;
 	global $pls,$db,$tablepre;
@@ -315,7 +321,8 @@ function replace_itembag(&$keep){
 				$arbe = $itme0;
 				$arbs = $itms0;
 				$arbsk = $itmsk0;
-				$itm0 = $itmk0 = $itmsk0 = '';
+				$arbpara = $itmpara0;
+				$itm0 = $itmk0 = $itmsk0 = $itmpara0 = '';
 				$itme0 = $itms0 = 0;
 			}else{
 				$i = $r_flag;
@@ -326,13 +333,14 @@ function replace_itembag(&$keep){
 				${'itme'.$i} = $itme0;
 				${'itms'.$i} = $itms0;
 				${'itmsk'.$i} = $itmsk0;
-				$itm0 = $itmk0 = $itmsk0 = '';
+				${'itmpara'.$i} = $itmpara0;
+				$itm0 = $itmk0 = $itmsk0 = $itmpara0 = '';
 				$itme0 = $itms0 = 0;
 			}
 			$log.="由于只能携带一个背包，你用拾到的品质较高的背包替换掉了身上的背包。<br>";
 		}elseif($r_flag){
 			$db->query("INSERT INTO {$tablepre}mapitem (itm, itmk, itme, itms, itmsk ,pls) VALUES ('$itm0', '$itmk0', '$itme0', '$itms0', '$itmsk0', '$pls')");
-			$itm0 = $itmk0 = $itmsk0 = '';
+			$itm0 = $itmk0 = $itmsk0 = $itmpara0 = '';
 			$itme0 = $itms0 = 0;
 			$log.="由于只能携带一个背包，你扔掉了这个品质较差的背包。<br>";
 		}else{

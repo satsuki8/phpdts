@@ -69,6 +69,7 @@ function itemmix_get_result($mlist,&$data=NULL)
 			'itme' => ${'itme'.$val},
 			'itms' => ${'itms'.$val},
 			'itmsk' => ${'itmsk'.$val},
+			'itmpara' => ${'itmpara'.$val},
 		);
 	}
     //常规合成
@@ -365,6 +366,7 @@ function itemmix_proc($mlist, $minfo, $itmstr, &$data=NULL)
 	else{
 		$itmsk0 = '';
 	}
+	$itmpara0 = $minfo['result'][5];
 	$uip['mixcls'] = !empty($minfo['class']) ? $minfo['class'] : '';
 	$uip['mixtp'] = $minfo['type'];
 	//合成成功
@@ -475,7 +477,7 @@ function itemmix_events(&$data=NULL)
 	if($itm0 == 'Untainted Glory'){
 		$log .= "<span class='minirainbow'>一道强光闪过——<br>
 			你背包中的物品一瞬间全部消失了！<br>这是获得无毁荣光的必要代价！</span><br>";
-		$itm1 = $itmk1 = $itmsk1 = $itm2 = $itmk2 = $itmsk2 = $itm3 = $itmk3 = $itmsk3 = $itm4 = $itmk4 = $itmsk4 = $itm5 = $itmk5 = $itmsk5 = $itm6 = $itmk6 = $itmsk6 = '';
+		$itm1 = $itmk1 = $itmsk1 = $itm2 = $itmk2 = $itmsk2 = $itm3 = $itmk3 = $itmsk3 = $itm4 = $itmk4 = $itmsk4 = $itm5 = $itmk5 = $itmsk5 = $itm6 = $itmk6 = $itmsk6 = $itmpara0= $itmpara1 =$itmpara2 =$itmpara3 =$itmpara4 =$itmpara5 = $itmpara6 =0;'';
 		$itme1 = $itms1 = $itme2 = $itms2 = $itme3 = $itms3 = $itme4 = $itms4 = $itme5 = $itms5 = $itme6 = $itms6 = 0;
 	}
 	return;

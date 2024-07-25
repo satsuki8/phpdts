@@ -26,6 +26,16 @@ namespace revcombat
 		# 格式化双方clbpara：最后保存角色数据的时候会自动转写clbpara，所以想改什么直接改就行了
 		$pa['clbpara'] = get_clbpara($pa['clbpara']); $pd['clbpara'] = get_clbpara($pd['clbpara']);
 
+		# Also Format weppara + arXpara:
+		$pa['weppara'] = get_itmpara($pa['weppara']); $pd['weppara'] = get_itmpara($pd['weppara']);
+		$pa['wep2para'] = get_itmpara($pa['wep2para']); $pd['wep2para'] = get_itmpara($pd['wep2para']);
+		$pa['arbpara'] = get_itmpara($pa['arbpara']); $pd['arbpara'] = get_itmpara($pd['arbpara']);
+		$pa['arhpara'] = get_itmpara($pa['arhpara']); $pd['arhpara'] = get_itmpara($pd['arhpara']);
+		$pa['arapara'] = get_itmpara($pa['arapara']); $pd['arapara'] = get_itmpara($pd['arapara']);
+		$pa['arfpara'] = get_itmpara($pa['arfpara']); $pd['arfpara'] = get_itmpara($pd['arfpara']);
+		$pa['artpara'] = get_itmpara($pa['artpara']); $pd['artpara'] = get_itmpara($pd['artpara']);
+
+
 		# 是否显示战斗界面
 		if($log_print)
 		{

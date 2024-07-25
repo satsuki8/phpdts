@@ -11,6 +11,7 @@ CREATE TABLE bra_maptrap (
   itme smallint unsigned NOT NULL default '0',
   itms char(5) not null default '0',
   itmsk char(5) not null default '',
+  itmpara text not null,
   pls tinyint unsigned not null default '0',
   
   PRIMARY KEY  (tid)

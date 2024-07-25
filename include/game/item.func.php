@@ -31,12 +31,14 @@ function itemuse($itmn,&$data=NULL) {
 	}
 	
 	////global ${'itm' . $itmn}, ${'itmk' . $itmn}, ${'itme' . $itmn}, ${'itms' . $itmn}, ${'itmsk' . $itmn};
+	//2024-07-19: I'm mad enough to add $itmpara, with me luck.
 	$itm = & ${'itm' . $itmn};
 	$itmk = & ${'itmk' . $itmn};
 	$itme = & ${'itme' . $itmn};
 	$itms = & ${'itms' . $itmn};
 	$itmsk = & ${'itmsk' . $itmn};
-	$i=$itm;$ik=$itmk;$ie=$itme;$is=$itms;$isk=$itmsk;
+	$itmpara = & ${'itmpara' . $itmn};
+	$i=$itm;$ik=$itmk;$ie=$itme;$is=$itms;$isk=$itmsk;$ipara=$itmpara;
 	
 	if (($itms <= 0) && ($itms != $nosta)) {
 		$itm = $itmk = $itmsk = '';
@@ -121,8 +123,9 @@ function itemuse($itmn,&$data=NULL) {
 			${$eqp.'e'} = $itme;
 			${$eqp.'s'} = $itms;
 			${$eqp.'sk'} = $itmsk;
+			${$eqp.'para'} = $itmpara;
 			$log .= "装备了<span class=\"yellow\">$itm</span>。<br>";
-			$itm = $itmk = $itmsk = '';
+			$itm = $itmk = $itmsk = $itmpara = '';
 			$itme = $itms = 0;
 		} else {
 
@@ -138,16 +141,19 @@ function itemuse($itmn,&$data=NULL) {
 			$itmet = ${$eqp.'e'};
 			$itmst = ${$eqp.'s'};
 			$itmskt = ${$eqp.'sk'};
+			$itmparat = ${$eqp.'para'};
 			${$eqp} = $itm;
 			${$eqp.'k'} = $itmk;
 			${$eqp.'e'} = $itme;
 			${$eqp.'s'} = $itms;
 			${$eqp.'sk'} = $itmsk;
+			${$eqp.'para'} = $itmpara;
 			$itm = $itmt;
 			$itmk = $itmkt;
 			$itme = $itmet;
 			$itms = $itmst;
 			$itmsk = $itmskt;
+			$itmpara = $itmparat;
 			$log .= "卸下了<span class=\"red\">$itm</span>，装备了<span class=\"yellow\">{${$eqp}}</span>。<br>";
 		}
 	} elseif (strpos ( $itmk, 'HS' ) === 0) {
@@ -1093,6 +1099,21 @@ function itemuse($itmn,&$data=NULL) {
 
 		include_once GAME_ROOT.'./include/game/itemmain.func.php';
 		itemget($data);	
+	} elseif(strpos ( $itmk, 'f99' ) === 0){ // Debug Box for testing $itmpara
+		$log.="你打开了<span class=\"yellow\">$itm</span>。<br>";
+		$itms--; $oitm = $itm;
+		if($itms <= 0) destory_single_item($data,$itmn,1);
+
+		$file1 = config('f99',$gamecfg);
+		$plist1 = openfile($file1);
+		$rand1 = rand(0,count($plist1)-1);
+		list($in,$ik,$ie,$is,$isk,$ipara) = explode(',',$plist1[$rand1]);
+		//global $itm0,$itmk0,$itme0,$itms0,$itmsk0,$mode;
+		$itm0 = $in;$itmk0=$ik;$itme0=$ie;$itms0=$is;$itmsk0=$isk;$itmpara0=$ipara;
+		addnews($now,'present',$name,$oitm,$in,$nick);
+
+		include_once GAME_ROOT.'./include/game/itemmain.func.php';
+		itemget($data);	
 	}elseif ($itmk=='U') {
 		//global $db, $tablepre,$pls;
 		$trapresult = $db->query("SELECT * FROM {$tablepre}maptrap WHERE pls = '$pls' AND itme>='$itme'");
@@ -1268,6 +1289,7 @@ function itemuse($itmn,&$data=NULL) {
 				$itme1 = $itme2 = $itme3 = $itme4 = $itme5 = $itme6 = 1;
 				$itms1 = $itms2 = $itms3 = $itms4 = $itms5 = $itms6 = 1;
 				$itmsk1 = $itmsk2 = $itmsk3 = $itmsk4 = $itmsk5 = $itmsk6 = '';
+				$itmpara0 = $itmpara1 = $itmpara2 = $itmpara3 = $itmpara4 = $itmpara5 = $itmpara6 = '';
 			}else{
 				//Otherwise, we swap every item in player's bag with random items at player's location.
 				$log .= '一道白光闪过，你背包中的物品都消失了，但是……<br>';
@@ -1368,6 +1390,7 @@ function itemuse($itmn,&$data=NULL) {
 				$itme1 = $itme2 = $itme3 = $itme4 = $itme5 = $itme6 = 1;
 				$itms1 = $itms2 = $itms3 = $itms4 = $itms5 = $itms6 = 1;
 				$itmsk1 = $itmsk2 = $itmsk3 = $itmsk4 = $itmsk5 = $itmsk6 = '';
+				$itmpara1 = $itmpara2 = $itmpara3 = $itmpara4 = $itmpara5 = $itmpara6 = '';
 			}else{
 				//Otherwise, we swap every item in player's bag with random items at player's location.
 				$log .= '一道白光闪过，你背包中的物品都消失了，但是……<br>';
@@ -1563,6 +1586,7 @@ function itemuse($itmn,&$data=NULL) {
 				$itme1 = $itme2 = $itme3 = $itme4 = $itme5 = $itme6 = 1;
 				$itms1 = $itms2 = $itms3 = $itms4 = $itms5 = $itms6 = 1;
 				$itmsk1 = $itmsk2 = $itmsk3 = $itmsk4 = $itmsk5 = $itmsk6 = '';
+				$itmpara1 = $itmpara2 = $itmpara3 = $itmpara4 = $itmpara5 = $itmpara6 = 0;
 			}else{
 				//Otherwise, we swap every item in player's bag with random items at player's location.
 				$log .= '一道白光闪过，你背包中的物品都消失了，但是……<br>';
@@ -3357,6 +3381,7 @@ function itemuse($itmn,&$data=NULL) {
 			$itme0 = 0;
 			$itms0 = 0;
 			$itmsk0 = '';
+			$itmpara = '';
 
 			//Par 低维生物's suggestion, the explode-rate will be stored in its $itmsk.
 			$log.="你下定决心，打开了这个可疑的<span class='yellow'>$itm</span>，开始翻找起来……<br>";
@@ -3726,6 +3751,20 @@ function itemuse($itmn,&$data=NULL) {
 			include_once GAME_ROOT.'./include/game/revcombat.func.php';
 			$pa = fetch_playerdata_by_pid(1);
 			$pd = fetch_playerdata_by_pid(2);
+			\revcombat\rev_combat_prepare($pa,$pd,1);
+		} elseif ($itm == '显现战斗测试仪'){
+			//Mod the above item, YOU'll enter fight with a player entry matching the item's $itme value.
+			global $pid;
+			include_once GAME_ROOT.'./include/game/revcombat.func.php';
+			$pa = fetch_playerdata_by_pid($pid);
+			$pd = fetch_playerdata_by_pid($itme);
+			\revcombat\rev_combat_prepare($pa,$pd,1);
+		} elseif ($itm == '战斗显现测试仪'){
+			//Mod the above item, A player entry matching item's $itme value will enter a fight with YOU.
+			global $pid;
+			include_once GAME_ROOT.'./include/game/revcombat.func.php';
+			$pa = fetch_playerdata_by_pid($itme);
+			$pd = fetch_playerdata_by_pid($pid);
 			\revcombat\rev_combat_prepare($pa,$pd,1);
 		} elseif ($itm == '对话测试器'){
 			//???

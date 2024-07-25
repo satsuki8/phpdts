@@ -1030,6 +1030,7 @@ $iteminfo = Array(//注意顺序，AB必须在A的前面，以此类推
 	'PB' => '命体恢复',
 	'p' => '礼物',
 	'fy' => '全地图唯一的野生浮云礼物盒',
+	'f99' => '【测】新格式福袋', # For test / Debug, uses new format that has $itmpara - will eventually be merged into existing formats.
 	'ygo' => '卡包',
 	//'R' => '探测仪器',	
 	'ss' => '歌词卡片',

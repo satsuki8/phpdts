@@ -45,6 +45,7 @@ CREATE TABLE bra_mapitem (
   itme int(10) unsigned NOT NULL DEFAULT '0',
   itms char(10) not null default '0',
   itmsk char(40) not null default '',
+  itmpara text not null,
   pls tinyint unsigned not null default '0',
   
   PRIMARY KEY  (iid)
@@ -63,6 +64,7 @@ CREATE TABLE bra_maptrap (
   itme int(10) unsigned NOT NULL DEFAULT '0',
   itms char(10) not null default '0',
   itmsk char(40) not null default '',
+  itmpara text not null,
   pls tinyint unsigned not null default '0',
   
   PRIMARY KEY  (tid)
@@ -119,6 +121,7 @@ CREATE TABLE bra_itemdepot (
   itme int(10) unsigned NOT NULL default '0',
   itms char(10) not null default '0',
   itmsk varchar(40) not null default '',
+  itmpara text not null,
   itmowner char(15) NOT NULL DEFAULT '',
   itmpw char(5) NOT NULL DEFAULT '',
   
