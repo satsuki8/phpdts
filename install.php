@@ -1220,7 +1220,10 @@ function runquery($sql) {
 	foreach(explode(";\n", trim($sql)) as $query) {
 		$queries = explode("\n", trim($query));
 		foreach($queries as $query) {
-			$ret[$num] .= $query[0] == '#' || $query[0].$query[1] == '--' ? '' : $query;
+		      	if (count($ret) == $num) {
+		        	$ret[] = '';
+		      	}
+			$ret[$num] .= strlen($query)<2 || $query[0] == '#' || $query[0].$query[1] == '--' ? '' : $query;
 		}
 		$num++;
 	}
